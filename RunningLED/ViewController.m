@@ -18,6 +18,7 @@
 @property (assign, nonatomic) float lastOnLED;
 @property (assign, nonatomic) int currentRow;
 @property (strong, nonatomic) NSTimer *timer;
+@property (assign, nonatomic) BOOL isIncrementing;
 
 @end
 
@@ -31,6 +32,7 @@
     self.maxBallPerRow = 9;
     self.numberOfBall = 9;
     self.lastOnLED = -1;
+    self.isIncrementing = YES;
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(runningLED) userInfo:nil repeats:true];
     //[self placeGreyBallAtX:100 andY:100 withTag:1];
     [self checkSizeOfApp];
@@ -90,11 +92,20 @@
     if (self.lastOnLED != -1) {
         [self turnOFFLed:self.lastOnLED];
     }
-    if (self.lastOnLED != self.numberOfBall -1) {
+    if (self.lastOnLED == self.numberOfBall-1) {
+        self.isIncrementing = NO;
+    } else if (self.lastOnLED == 0){
+        self.isIncrementing = YES;
+    }
+    
+    if (self.isIncrementing == YES) {
         self.lastOnLED++;
     } else {
-        self.lastOnLED = 0;
+        self.lastOnLED--;
     }
+    
+    
+    
     [self turnONLed:self.lastOnLED];
 }
 
